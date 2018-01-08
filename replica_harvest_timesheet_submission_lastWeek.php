@@ -106,7 +106,7 @@ $getUserEntries_Data=$getUserEntries->data;
 $billable_count=0;
 
 
-echo "User Data: ".$value;
+echo "Stm #6:User Data: ".$value;
 echo "<br>";
 var_dump($getUserEntries_Data);
 echo "<br>";
@@ -116,27 +116,27 @@ foreach($getUserEntries_Data as $key3=>$value3){
 $approved_user=$value3->get("is-closed");
 $project_id=$value3->get("project-id");
 
-
+//Users whose Timesheet was approved Last Week
 
 if($approved_user=="true"){
-echo "<br>It is approved!!";
+echo "<br>Stm #7: Last week's Timesheet was approved!!";
 
-echo "<br>The Project ID is: ".$project_id;
+echo "<br>Stm #8:The Project ID is: ".$project_id;
 
-
+//To find out whether the Project is billable
 $projects=$api->getProject($project_id);
 
 
 $projects_Data=$projects->data;
-echo "<br>Project Information";
+echo "<br>Stm #9:Project Information";
 var_dump($projects_Data);
 echo "<br>";
 $project_billable=$projects_Data->get("billable");
 
 
-
+//Checking whether the project is billable and if the user has entered billable hours, it pushes the User ID into a new Array. Checks This condition only Once
 if (($project_billable=="true")&&($billable_count<1)){
-echo "It is True!!";
+echo "<br>Stm #10: The project is billable";
 
 array_push($Final_User_ID_List, $value);
 $billable_count+=1;
@@ -144,7 +144,7 @@ $billable_count+=1;
 
 else{
 
-echo "It is False";
+echo "Stm #11: The project is not billable";
 }
 
 
@@ -152,7 +152,7 @@ echo "It is False";
 
 }
 else {
-echo "<br>It's Not Approved!!";
+echo "<br>Stm #12: Last Week's Timesheet was not Approved!!";
 }
 
 
@@ -164,7 +164,7 @@ echo "<br>It's Not Approved!!";
 
 }
 
-echo "<br>The Final User List Is: ";
+echo "<br>Stm #13:The Final User List Is: ";
 
 foreach($Final_User_ID_List as $value){
 echo $value;
@@ -173,5 +173,5 @@ echo "<br>";
 
 }
 
-echo "Test";
+
 ?>
