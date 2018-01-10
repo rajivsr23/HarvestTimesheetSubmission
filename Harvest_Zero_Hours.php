@@ -127,16 +127,24 @@
 
 	$result=  array_diff ( $User_ID_Total_List,$User_ID_Entered_Hours_List );
 
-	echo "<br>The List of Users Who Have Entered 0 Hours in their Timesheet are: ";
+	echo "<br>The List of Users Who Have Entered 0 Hours in their Timesheet are: <br>";
 	$count_result=0;
 	//var_dump($result);
 	foreach ($result as $key6 => $value6) {
 	echo $value6;
 	echo "<br>";
 	$count_result=$count_result+1;
+
+$getUser=$api->getUser($value6);
+$getUser_Data=$getUser->data;
+echo " ".$getUser_Data->get("first-name");
+echo " " .$getUser_Data->get("last-name");
+
+echo "<br>";
 	}
 
 	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result;
+
 
 
 	?>
