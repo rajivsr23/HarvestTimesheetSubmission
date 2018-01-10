@@ -2,7 +2,7 @@
 require_once( 'connection.php' );
 
 //User Object-List of Users
-$range2=Harvest_Range::lastWeek("EST");
+
 $users=$api->getUsers();
 
 $users_Data=$users->data;
@@ -44,7 +44,7 @@ $user_id=$value3->get("user-id");
 
 
 
-//Trying to get the User Object to filter out Admins
+//Trying to get the specific User Object to filter out Admins
 $getUser=$api->getUser($user_id);
 $getUser_Data=$getUser->data;
 
@@ -54,14 +54,14 @@ $user_active=$getUser_Data->get("is-active");
 //Is-Admin Criteria
 //Creating an Array of User ID's and performing a check to ensure that there are no duplicates when pushing a new element Into an Array.
 if(($admin=="false") && ($user_active=="true")){
-echo "Stm #2: This user is not an Admin and is an active user: ".$getUser_Data->get("first-name");
+echo "<br>Stm #2: This user is not an Admin and is an active user: ".$getUser_Data->get("first-name");
 
 echo "<br>";
-echo "Stm #3: Email:". $getUser_Data->get("email");
+echo "Stm #3: Email:".$getUser_Data->get("email");
 echo "<br>";
 
-    if(!in_array($user_id, $User_ID_List, true)){
-        array_push($User_ID_Total_List, $user_id);
+    if(!in_array($user_id, $User_ID_Entered_Hours_List, true)){
+        array_push($User_ID_Entered_Hours_List, $user_id);
     }
 
 
@@ -77,29 +77,33 @@ echo "<br>";
 
 }
 
-}
 
-// The User ID List is a list of users whose Timesheet for this week has not been approved and are not Admins.
-echo "Stm #4: The User ID List for this week (Whose Timesheets for this week are not approved and they are not admins): ";
+
+// The User ID List is a list of users who have entered hours in their Timesheet
+echo "<br>Stm #4: The User ID List for this week for people who have entered their hours in their Timesheet ";
 
 echo "<br>";
 
-foreach($User_ID_List as $value){
+foreach($User_ID_Entered_Hours_List as $value){
 echo $value;
 
 echo "<br>";
 
 }
 
-echo "<br";
+echo "<br>";
 
+//Looping through the User Object
+
+/*
+$count=0;
 foreach($users_Data as $key4=>$value4){
-$user_id_total=$value4->get("user-id");
+$user_id_total=$value4->get("id");
 $user_active_total=$value4->get("is-active");
 
 if($user_active_total=="true"){
- array_push($User_ID_Entered_Hours_List, $user_id_total);
-
+ array_push($User_ID_Total_List, $user_id_total);
+$count+=1;
 
 }
 
@@ -113,7 +117,7 @@ echo "<br>";
 	
 }
 
-
-
+echo "Total Active Users ".$count;
+*/
 
 ?>
