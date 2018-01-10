@@ -6,6 +6,8 @@
 	$users_Data=$users->data;
 	$projects=$api->getProjects();
 	$projects_Data=$projects->data;
+	$role_Timesheet = 'Required';
+
 	$User_ID_Entered_Hours_List= array();
 	$User_ID_Total_List=array();
 	$result=array();
@@ -32,11 +34,11 @@
 	$getUser_Data=$getUser->data;
 	$admin=$getUser_Data->get("is-admin");
 	$user_active=$getUser_Data->get("is-active");
-	$user_department=$getUser_Data->get("department");
+	$user_department=$getUser_Data->get("roles");
 
 	//Is-Admin Criteria
 	//Creating an Array-Users Entered Hours of User ID's and performing a check to ensure that there are no duplicates when pushing a new element Into an Array.
-	if($user_department=="Weekly Timesheet Required"){
+	if(strpos($user_department, $role_Timesheet) !== false){
 	
 	    if(!in_array($user_id, $User_ID_Entered_Hours_List, true)){
 	        array_push($User_ID_Entered_Hours_List, $user_id);
@@ -47,6 +49,7 @@
 	}
 	}
 	
+	
 
 
 	//Creating a List of Active Users in Harvest
@@ -55,14 +58,16 @@
 	$user_id_total=$value4->get("id");
 	$user_admin_total=$value4->get("is-admin");
 	$user_active_total=$value4->get("is-active");
-	$user_department=$value4->get("department");
-	if($user_department=="Weekly Timesheet Required"){
+	$user_department=$value4->get("roles");
+	if(strpos($user_department, $role_Timesheet) !== false){
 	 array_push($User_ID_Total_List, $user_id_total);
 	$count+=1;
+
 	}
 	}
 
-	
+
+
 	
 	
 	//Array Difference
@@ -80,5 +85,5 @@ echo " ".$getUser_Data->get("first-name");
 echo " " .$getUser_Data->get("last-name");
 echo "<br>";
 	}
-	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result;
+	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result; 
 	?>
