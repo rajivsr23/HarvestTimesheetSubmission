@@ -98,9 +98,9 @@ array_push($result_Names, $Full_Name);
 //Emailing Section
 
 
-	$to="rr@sohodragon.com";
-$subject = 'Test';
-$message1="These users didn’t submit this timesheets on Friday.";
+	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+$subject = 'Test-Users Not submitted their Timesheet';
+$message1="These users didn’t submit their timesheets on Friday.";
 
 $message2="Can their line managers remind them that there timesheets need to be complete by Friday.";
 
@@ -121,7 +121,7 @@ $result=implode("<br> ",$result_Names); //////
 
 $new_string=$message1."<br> ".$result. "<br>".$message2;
 
-
+mail($to, $subject, $new_string, $headers);
 
 
 	?>
