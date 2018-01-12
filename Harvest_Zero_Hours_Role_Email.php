@@ -75,6 +75,27 @@
 	$result=  array_diff ( $User_ID_Total_List,$User_ID_Entered_Hours_List );
 	echo "<br>The List of Users Who Have Entered 0 Hours in their Timesheet are: <br>";
 	$count_result=0;
+
+//Header for the email
+$headers = 'From: noreply@wardpeter.com' . "\r\n" .
+    'Reply-To: noreply@wardpeter.com' . "\r\n" .
+     "Content-type: text/html; charset=\"UTF-8\"; format=flowed \r\n";
+    'X-Mailer: PHP/' . phpversion();
+
+//Statements to Calculate Sunday Date
+
+    $Current = Date('N');
+$DaysToSunday = 7 - $Current;
+$Sunday = Date('M-d', StrToTime("+ {$DaysToSunday} Days"));
+
+    $subject_individual="Please Submit Your Timesheet, Week Ending: ".$Sunday; //Sunday Date
+
+//Body for the Individual Emails
+$message1_individual = "<html><head></head><body>";
+$message2_individual = "<img src='http://www.wardpeter.com/harvest_url/Email_Picture3_updated.png' /></body></html>";
+$message4_individual="Best Regards,";
+$message5_individual="SoHo Ops";
+	
 	
 	//Inserting the names in a new Array
 	foreach ($result as $key6 => $value6) {
@@ -85,31 +106,42 @@ $getUser=$api->getUser($value6);
 $getUser_Data=$getUser->data;
 $First_Name=$getUser_Data->get("first-name");
 $Last_Name=$getUser_Data->get("last-name");
+$User_Email_Address=$getUser_Data->get("email");
+$to_individual=$User_Email_Address;
+
+$message3_individual="Yup! You Heard it right  ".$First_Name. "Please submit your Timesheet today. It's due at the end of the week";
 echo " ".$getUser_Data->get("first-name");
 echo " " .$getUser_Data->get("last-name");
 echo "<br>";
 $Full_Name=$First_Name." ".$Last_Name;
 
 array_push($result_Names, $Full_Name);
+
+$Final_String_Individual=$message1.$message2."<br>".$message3."<br><br>".$message4."<br>".$message5;
+
+//Mailing code function mail($to_individual, $subject_individual, $Final_String_Individual, $headers);
+
 	}
+
 	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result; 
 	
 
 //Emailing Section
 
+	//For the Consolidated Email to Teams
 
-	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+$to="rr@sohodragon.com";
+	//$to="67e3cba4.sohodragon.com@amer.teams.ms";
 $subject = 'Test-Users Not submitted their Timesheet';
-$message1="These users didn’t submit their timesheets on Friday.";
+
+//ACTION REQUIRED: Modify the date function depending on when this email is being sent-This should be the date for Friday
+$message1="These users didn’t submit their timesheets on Friday ".date("M-d", strtotime("this friday"));
 
 $message2="Can their line managers remind them that there timesheets need to be complete by Friday.";
 
 
 
-$headers = 'From: noreply@wardpeter.com' . "\r\n" .
-    'Reply-To: noreply@wardpeter.com' . "\r\n" .
-     "Content-type: text/html; charset=\"UTF-8\"; format=flowed \r\n";
-    'X-Mailer: PHP/' . phpversion();
+
 
 
 
@@ -122,6 +154,11 @@ $result=implode("<br> ",$result_Names); //////
 $new_string=$message1."<br> ".$result. "<br>".$message2;
 
 mail($to, $subject, $new_string, $headers);
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 	?>
