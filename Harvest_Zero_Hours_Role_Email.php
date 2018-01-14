@@ -189,7 +189,7 @@ $Last_Name=$getUser_Data->get("last-name");
 $User_Email_Address=$getUser_Data->get("email");
 $to_individual=$User_Email_Address;
 
-$message3_individual="Yup! You Heard it right  ".$First_Name. "Please submit your Timesheet today. It's due today.";
+$message3_individual="Yup! You Heard it right  ".$First_Name. ". "."Please submit your Timesheet today. It's due today.";
 echo " ".$getUser_Data->get("first-name");
 echo " " .$getUser_Data->get("last-name");
 echo "<br>";
