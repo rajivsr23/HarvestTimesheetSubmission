@@ -1,6 +1,8 @@
 	<?php
 	require_once( 'connection.php' );
 	//User Object-List of Users
+//Code to send Individual Emails to users that fall in the criteria-This is sent on Sunday Morning.
+
 	$users=$api->getUsers();
 	$users_Data=$users->data;
 	$projects=$api->getProjects();
@@ -174,7 +176,7 @@ echo " " .$getUser_Data->get("last-name");
 echo "<br>";
 $Full_Name=$First_Name." ".$Last_Name;
 
-array_push($result_Names, $Full_Name);
+
 
 $Final_String_Individual=$message1_individual.$message2_individual."<br>".$message3_individual."<br><br>".$message4_individual."<br>".$message5_individual;
 
