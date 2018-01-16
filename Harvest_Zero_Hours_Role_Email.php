@@ -150,31 +150,10 @@ $message4_individual="Best Regards,";
 $message5_individual="SoHo Billing";
 
 
-//If the Final Array is empty->The System doesn't need to send Individual Emails	
 
 
-if(empty($User_ID_Final_List_3_Criteria)){	
-
-//If the Final List is Empty Send an Email to Teams->Nice Feature to Have
-
-	$to="67e3cba4.sohodragon.com@amer.teams.ms";
-
-$subject = 'Everyone submitted their Timesheet';
-
-$message1="All timesheets submitted this week ending on  ".$Sunday. ". ". "Great job team." ;
-
-$message2="Thank you";
-
-$message3="SoHo Billing";
 
 
-$new_string=$message1."<br><br> ".$message2."<br>".$message3;
-
-mail($to, $subject, $new_string, $headers);
-
-}
-
-else{
 
 
 	//Inserting the names in a new Array
@@ -206,42 +185,8 @@ mail($to_individual, $subject_individual, $Final_String_Individual, $headers);
 	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result; 
 	
 
-//Emailing Section
-
-	//For the Consolidated Email to Teams
-
-//$to="rr@sohodragon.com";
 
 
-	$to="67e3cba4.sohodragon.com@amer.teams.ms";
-$subject = 'Users Not submitted their Timesheet';
-
-
-$message1="These users hadn't submit their timesheets by Friday ".date("M-d", strtotime("this friday"));
-
-$message2="Can their line managers remind them that there timesheets need to be complete by Friday.";
-
-$message3="SoHo Billing";
-
-
-
-
-
-
-
-$result=implode("<br> ",$result_Names); //////
-
-
-
-//String Concatenation
-
-$new_string=$message1."<br> ".$result. "<br>".$message2."<br><br>".$message3;
-
-mail($to, $subject, $new_string, $headers);
-
-
-
-}
 
 
 
