@@ -1,8 +1,6 @@
 	<?php
 	require_once( 'connection.php' );
 	//User Object-List of Users
-//Code to send Individual Emails to users that fall in the criteria-This is sent on Sunday Morning.
-
 	$users=$api->getUsers();
 	$users_Data=$users->data;
 	$projects=$api->getProjects();
@@ -152,14 +150,33 @@ $message4_individual="Best Regards,";
 $message5_individual="SoHo Billing";
 
 
+//If the Final Array is empty->The System doesn't need to send Individual Emails	
 
 
+if(empty($User_ID_Final_List_3_Criteria)){	
+
+//If the Final List is Empty Send an Email to Teams->Nice Feature to Have
+
+	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+
+$subject = 'Everyone submitted their Timesheet';
+
+$message1="All timesheets submitted this week ending on  ".$Sunday. ". ". "Great job team." ;
+
+$message2="Thank you";
+
+$message3="SoHo Billing";
 
 
+$new_string=$message1."<br><br> ".$message2."<br>".$message3;
 
+mail($to, $subject, $new_string, $headers);
 
-	//Inserting the names in a new Array
-	foreach ($User_ID_Final_List_3_Criteria as $key6 => $value6) {
+}
+
+else{
+
+foreach ($User_ID_Final_List_3_Criteria as $key6 => $value6) {
 	//echo $value6;
 	//echo "<br>";
 	$count_result=$count_result+1;
@@ -167,8 +184,7 @@ $getUser=$api->getUser($value6);
 $getUser_Data=$getUser->data;
 $First_Name=$getUser_Data->get("first-name");
 $Last_Name=$getUser_Data->get("last-name");
-$User_Email_Address=$getUser_Data->get("email");
-$to_individual=$User_Email_Address;
+
 
 $message3_individual="Yup! You Heard it right  ".$First_Name. ". "."Please submit your Timesheet today. It's due today.";
 echo " ".$getUser_Data->get("first-name");
@@ -176,19 +192,48 @@ echo " " .$getUser_Data->get("last-name");
 echo "<br>";
 $Full_Name=$First_Name." ".$Last_Name;
 
-
-
-$Final_String_Individual=$message1_individual.$message2_individual."<br>".$message3_individual."<br><br>".$message4_individual."<br>".$message5_individual;
-
-mail($to_individual, $subject_individual, $Final_String_Individual, $headers);
-
-	}
+array_push($result_Names, $Full_Name);
+}	
 
 	echo "<br>The number of Users who have entered 0 hours in their Timesheet: ".$count_result; 
 	
 
+//Emailing Section
+
+	//For the Consolidated Email to Teams
+
+//$to="rr@sohodragon.com";
 
 
+	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+$subject = 'Users Not submitted their Timesheet';
+
+
+$message1="These users hadn't submitted their timesheets by Friday ".date("M-d", strtotime("last friday"));
+
+$message2="Can their line managers remind them that there timesheets need to be complete by Friday.";
+
+$message3="SoHo Billing";
+
+
+
+
+
+
+
+$result=implode("<br> ",$result_Names); //////
+
+
+
+//String Concatenation
+
+$new_string=$message1."<br> ".$result. "<br>".$message2."<br><br>".$message3;
+
+mail($to, $subject, $new_string, $headers);
+
+
+
+}
 
 
 
