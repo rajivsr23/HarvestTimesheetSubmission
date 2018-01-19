@@ -157,7 +157,7 @@ if(empty($User_ID_Final_List_3_Criteria)){
 
 //If the Final List is Empty Send an Email to Teams->Nice Feature to Have
 
-	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+	$to="a38c5253.sohodragon.com@amer.teams.ms ";
 
 $subject = 'Everyone submitted their Timesheet';
 
@@ -205,7 +205,7 @@ array_push($result_Names, $Full_Name);
 //$to="rr@sohodragon.com";
 
 
-	$to="67e3cba4.sohodragon.com@amer.teams.ms";
+	$to="a38c5253.sohodragon.com@amer.teams.ms ";
 $subject = 'Users Not submitted their Timesheet';
 
 
