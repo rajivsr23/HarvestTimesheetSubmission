@@ -1,5 +1,9 @@
 	<?php
+	ini_set("display_errors","1");
+ERROR_REPORTING(E_ALL);
 	require_once( 'connection.php' );
+
+//Harvest Range Format: 20160901 :YYYYMMDD
 	//User Object-List of Users
 	$users=$api->getUsers();
 	$users_Data=$users->data;
@@ -13,8 +17,55 @@
 	$User_ID_Total_List=array();
 	$result=array();
 	$result_Names=array();
-	$range=Harvest_Range::thisWeek("EST",Harvest_Range::MONDAY);
+
+//Statements to Calculate This Sunday Date
+
+    $Current = Date('N'); //N-1-Monday...7-Sunday
+$DaysToSunday = 7 - $Current;
+$Sunday = Date('M-d', StrToTime("+ {$DaysToSunday} Days"));
+$unix_Sunday= StrToTime("+ {$DaysToSunday} Days");
+//Calculating This Monday's Date
+//$DaysToMonday=1-$Current;
+//$Monday=Date("M-d", StrToTime("last Monday");
+
+
+
+
+
+$unix_Monday= StrToTime('Monday this week');
+
+$Monday = date('M-d',$unix_Monday);
+
+echo "<br>The Date this Monday is: ".$Monday;
+
+echo "<br>The Date This Sunday is: ".$Sunday;
+
+echo "<br>The date on Sunday Two Weeks before was...";
+
+$DateTwoWeeksBefore_Sunday=getTwoWeeksBefore($Sunday);
+echo "<br>".$DateTwoWeeksBefore_Sunday;
+echo "<br>Formatted Harvest Sunday Date: ".$DateTwoWeeksBefore_Sunday;
+
+echo "<br>The date on Monday Two Weeks before was...";
+$DateTwoWeeksBefore_Monday=getTwoWeeksBefore($Monday);
+echo "<br>".$DateTwoWeeksBefore_Monday;
+echo "<br>Formatted Harvest Monday Date: ".$DateTwoWeeksBefore_Monday;
+
+function getTwoWeeksBefore($DateThisWeek){
+
+$DateTwoWeeksBefore=date('Ymd', strtotime('-2 week', strtotime($DateThisWeek)));
+
+echo "<br>".$DateTwoWeeksBefore;
+return $DateTwoWeeksBefore;
+}
+
+
+//Since the script is running on Monday...
+
+	//Should be Last Week
 	$range_last_week=Harvest_Range::lastWeek("EST",Harvest_Range::MONDAY);
+	//Should be Week before Last
+	$range_week_before_last=new Harvest_Range($DateTwoWeeksBefore_Monday, $DateTwoWeeksBefore_Sunday);
 
 	//Looping through the Project Object
 	foreach($projects_Data as $key2=>$value2){
@@ -25,7 +76,7 @@
 	$project_id=$value2->get("id");
 	 
 	//Getting Project Entries so that we can get Information about user-id's and whether people have entered 0 hours in their Timesheet
-	$project_entries=$api->getProjectEntries($project_id,$range);
+	$project_entries=$api->getProjectEntries($project_id,$range_last_week);
 	$project_entries_Data=$project_entries->data;
 
 	//Looping through Project Entries
@@ -64,7 +115,7 @@
 	$project_id=$value2->get("id");
 	 
 	//Getting Project Entries so that we can get Information about user-id's and whether people have entered 0 hours in their Timesheet
-	$project_entries=$api->getProjectEntries($project_id,$range_last_week);
+	$project_entries=$api->getProjectEntries($project_id,$range_week_before_last);
 	$project_entries_Data=$project_entries->data;
 
 	//Looping through Project Entries
@@ -156,7 +207,7 @@ $message5_individual="SoHo Billing";
 if(empty($User_ID_Final_List_3_Criteria)){	
 
 //If the Final List is Empty Send an Email to Teams->Nice Feature to Have
-
+//$to="67e3cba4.sohodragon.com@amer.teams.ms";
 	$to="a38c5253.sohodragon.com@amer.teams.ms ";
 
 $subject = 'Everyone submitted their Timesheet';
@@ -185,11 +236,6 @@ $getUser_Data=$getUser->data;
 $First_Name=$getUser_Data->get("first-name");
 $Last_Name=$getUser_Data->get("last-name");
 
-
-$message3_individual="Yup! You Heard it right  ".$First_Name. ". "."Please submit your Timesheet today. It's due today.";
-echo " ".$getUser_Data->get("first-name");
-echo " " .$getUser_Data->get("last-name");
-echo "<br>";
 $Full_Name=$First_Name." ".$Last_Name;
 
 array_push($result_Names, $Full_Name);
@@ -204,14 +250,14 @@ array_push($result_Names, $Full_Name);
 
 //$to="rr@sohodragon.com";
 
-
+//$to="67e3cba4.sohodragon.com@amer.teams.ms";
 	$to="a38c5253.sohodragon.com@amer.teams.ms ";
 $subject = 'Users Not submitted their Timesheet';
 
 
 $message1="These users hadn't submitted their timesheets by Friday ".date("M-d", strtotime("last friday"));
 
-$message2="Can their line managers remind them that there timesheets need to be complete by Friday.";
+$message2="Can their line managers remind them that their timesheets need to be complete by Friday.";
 
 $message3="SoHo Billing";
 
