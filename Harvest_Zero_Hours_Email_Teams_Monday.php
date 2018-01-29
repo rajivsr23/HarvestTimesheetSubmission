@@ -194,14 +194,14 @@ $Sunday = Date('M-d', StrToTime("+ {$DaysToSunday} Days"));
 
     $subject_individual="Please Submit Your Timesheet, Week Ending: ".$Sunday; //Sunday Date
 
-//Body for the Individual Emails
-$message1_individual = "<html><head></head><body>";
-$message2_individual = "<img src='http://www.wardpeter.com/harvest_url/Email_Picture3_updated.png' /></body></html>";
-$message4_individual="Best Regards,";
-$message5_individual="SoHo Billing";
+    //Yesterday's Date-Since Email runs on Monday
+
+   $Yesterday= date("F j", time() - 60 * 60 * 24);
 
 
-//If the Final Array is empty->The System doesn't need to send Individual Emails	
+
+
+	
 
 
 if(empty($User_ID_Final_List_3_Criteria)){	
@@ -210,9 +210,9 @@ if(empty($User_ID_Final_List_3_Criteria)){
 //$to="67e3cba4.sohodragon.com@amer.teams.ms";
 	$to="a38c5253.sohodragon.com@amer.teams.ms ";
 
-$subject = 'Everyone submitted their Timesheet';
+$subject = 'Everyone submitted their Timesheets';
 
-$message1="All timesheets submitted this week ending on  ".$Sunday. ". ". "Great job team." ;
+$message1="All timesheets submitted this week ending on  ".$Yesterday. ". ". "Great job team." ;
 
 $message2="Thank you";
 
